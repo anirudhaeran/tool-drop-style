@@ -1,0 +1,9 @@
+node_modules/
+package-lock.json
+kit/audio/*
+!kit/audio/.gitkeep
+kit/sfx-library/raw/*
+!kit/sfx-library/raw/.gitkeep
+kit/sfx-library/sonniss/
+*.log
+.DS_Store

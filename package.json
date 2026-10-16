@@ -1,0 +1,15 @@
+{
+  "name": "style-tool-drop",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tool-Drop editing style for Claude Code (inspired by Nick Sarev, not affiliated). Shared by @aeran.ai.",
+  "scripts": {
+    "setup": "node engine/td.mjs setup",
+    "doctor": "node engine/td.mjs doctor"
+  },
+  "dependencies": {
+    "hyperframes": "0.8.140"
+  },
+  "license": "MIT"
+}

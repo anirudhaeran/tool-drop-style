@@ -1,0 +1,335 @@
+/* Nick Sarev style kit — layouts, captions and components (see STYLE.md for the rules). */
+:root {
+  --ns-white: #ffffff;
+  --ns-beige: #f4ede6;
+  --ns-grey: #ececec;
+  --ns-dark: #0d1117;
+  --ns-ink: #111111;
+  --ns-muted: #8a8079;
+  --ns-accent: #d97757;
+  --ns-red: #e5484d;
+  --ns-green: #30a46c;
+  --ns-amber: #f5a524;
+  --ns-serif: "Instrument Serif", Georgia, serif;
+  --ns-sans: "Inter", "Segoe UI", Arial, sans-serif;
+  --ns-mono: "JetBrains Mono", Consolas, monospace;
+  --ns-card-top: 1150px;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+}
+#root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  font-family: var(--ns-sans);
+}
+
+/* ---------- scenes ---------- */
+.scene {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+.theme-white { background: var(--ns-white); color: var(--ns-ink); }
+.theme-beige { background: var(--ns-beige); color: var(--ns-ink); }
+.theme-grey { background: var(--ns-grey); color: var(--ns-ink); }
+.theme-dark { background: var(--ns-dark); color: #fff; }
+.theme-black { background: #000; color: #fff; }
+.stage {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.layout-full .stage { top: 140px; height: 1060px; }
+.layout-split .stage { top: 60px; height: 940px; }
+.layout-shot .stage { top: 0; bottom: 0; }
+
+/* split: speaker card (fill lives in the scene, the speaker video sits above in .aroll-split) */
+.card-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--ns-card-top);
+  height: 830px;
+  border-radius: 56px 56px 0 0;
+  background: radial-gradient(120% 85% at 12% 38%, #263c92 0%, #19244d 52%, #121a33 100%);
+  box-shadow: 0 -14px 50px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+.aroll-split {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--ns-card-top);
+  height: 830px;
+  border-radius: 56px 56px 0 0;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+.aroll-split .feather {
+  position: absolute;
+  left: 195px;
+  top: -255px;
+  width: 691px;
+  height: 1228px;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(to right, transparent 0%, #000 18%, #000 82%, transparent 100%);
+}
+.aroll-split video,
+.aroll-th video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* clone variant ("panel"): hard 50/50 split — the speaker keeps full size, just moved down
+   into the bottom half (for head-and-shoulders clips whose bottom edge is empty/faded) */
+.layout-split.panel .stage { top: 30px; height: 820px; }
+.aroll-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 960px;
+  height: 960px;
+  overflow: hidden;
+  z-index: 2;
+  pointer-events: none;
+}
+/* the seam shadow lives inside the (timed) split scene, so it only shows during split shots —
+   never style the always-present .aroll-* wrappers */
+.panel-seam {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 960px;
+  height: 960px;
+  background: #121a33;
+  box-shadow: 0 -10px 34px rgba(0, 0, 0, 0.22);
+}
+.aroll-panel .frame {
+  position: absolute;
+  left: 0;
+  top: -960px;
+  width: 1080px;
+  height: 1920px;
+  transform: translateY(var(--panel-shift, 577px)) scale(var(--panel-zoom, 1.22));
+  transform-origin: 50% 42%;
+}
+.aroll-panel video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+/* talking head: base zoom on .zoom (CSS), push-ins on .aroll-th (GSAP) */
+.aroll-th {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+}
+.aroll-th .zoom {
+  position: absolute;
+  inset: 0;
+  transform: scale(1.22);
+  transform-origin: 50% 42%;
+}
+
+/* screenshot layout: blurred copy behind a sharp card */
+.shot-bg {
+  position: absolute;
+  inset: -120px;
+  background-size: cover;
+  background-position: center top;
+  filter: blur(48px) brightness(0.42) saturate(1.15);
+}
+.shot-card {
+  position: absolute;
+  left: 50px;
+  right: 50px;
+  top: 210px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+.shot-card img { display: block; width: 100%; }
+.hl-box {
+  position: absolute;
+  border: 7px solid var(--ns-accent);
+  border-radius: 16px;
+  box-shadow: 0 0 0 6px rgba(217, 119, 87, 0.22), 0 10px 30px rgba(217, 119, 87, 0.35);
+}
+.hl-sweep {
+  position: absolute;
+  background: rgba(255, 140, 60, 0.45);
+  border-radius: 6px;
+  mix-blend-mode: multiply;
+}
+
+/* ---------- captions ---------- */
+#caps {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+.cap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--y) - 120px);
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+}
+.cap .sans {
+  font: 700 92px/1.05 var(--ns-sans);
+  letter-spacing: -0.035em;
+}
+.cap .serif {
+  font-family: var(--ns-serif);
+  font-style: italic;
+  font-size: 140px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  -webkit-text-stroke: 3px currentColor;
+}
+.cap .soft {
+  font-family: var(--ns-serif);
+  font-style: italic;
+  font-size: 150px;
+  line-height: 1;
+  -webkit-text-stroke: 2px currentColor;
+}
+.cap .dark { color: var(--ns-ink); }
+.cap .light { color: #fff; }
+.cap .accent { color: var(--ns-accent); }
+.cap.pos-th .sans,
+.cap.pos-th .soft {
+  color: #fff;
+  text-shadow: 0 0 36px rgba(10, 14, 40, 0.75), 0 4px 18px rgba(10, 14, 40, 0.6), 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.cap.pos-shot .serif { text-shadow: 0 6px 30px rgba(0, 0, 0, 0.5); }
+/* emphasis: serif lead word stacked over a gradient keyword */
+.cap.emph { flex-direction: column; }
+.cap.emph .lead {
+  font-family: var(--ns-serif);
+  font-style: italic;
+  font-size: 118px;
+  line-height: 0.85;
+  color: #fff;
+  -webkit-text-stroke: 1.5px #fff;
+  text-shadow: 0 4px 24px rgba(10, 14, 40, 0.65);
+  position: relative;
+  z-index: 2;
+}
+.cap.emph .key {
+  font: 800 156px/1 var(--ns-sans);
+  letter-spacing: -0.045em;
+  margin-top: -22px;
+  background: linear-gradient(180deg, #fff6ec 0%, #ffcf9e 42%, #ff7a2f 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 8px 26px rgba(255, 110, 40, 0.5)) drop-shadow(0 2px 6px rgba(0, 0, 0, 0.45));
+}
+
+/* ---------- components ---------- */
+.item {
+  position: relative;
+  width: 760px;
+  height: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+.item-head {
+  position: absolute;
+  top: 120px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-family: var(--ns-serif);
+  font-style: italic;
+  font-size: 190px;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  background: linear-gradient(180deg, #e2525f 0%, #ee8f93 45%, rgba(246, 190, 190, 0) 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  z-index: 1;
+}
+.tile {
+  position: relative;
+  z-index: 2;
+  width: 340px;
+  height: 340px;
+  border-radius: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 34px 70px rgba(0, 0, 0, 0.22), 0 6px 16px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+}
+.tile svg { width: 58%; height: 58%; }
+.ui-card {
+  background: #fff;
+  border-radius: 28px;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  box-shadow: 0 26px 60px rgba(40, 25, 10, 0.12), 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+.dark-card {
+  background: #161b22;
+  border-radius: 24px;
+  border: 1px solid #30363d;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font: 600 30px/1 var(--ns-sans);
+  padding: 12px 24px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pill.green { background: #e7f6ee; color: #1f7a4d; }
+.pill.red { background: #fde8e8; color: #c8323a; }
+.pill.orange { background: #fdeee6; color: #b4532e; }
+.pill.grey { background: #f1efec; color: #6d655f; }
+.mono { font-family: var(--ns-mono); }
+.big-num {
+  font: 800 200px/1 var(--ns-sans);
+  letter-spacing: -0.05em;
+}
+.label {
+  font: 500 46px/1.2 var(--ns-sans);
+  color: var(--ns-muted);
+}
+.mascot { image-rendering: pixelated; shape-rendering: crispEdges; }

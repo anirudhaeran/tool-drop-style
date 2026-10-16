@@ -1,0 +1,57 @@
+{
+  "transcribe": {
+    "engine": "parakeet",
+    "language": null
+  },
+  "silence": {
+    "enabled": true,
+    "thresholdDb": "auto",
+    "minSilence": 0.45,
+    "keepAfterSpeech": 0.15,
+    "keepBeforeSpeech": 0.1
+  },
+  "fillers": {
+    "enabled": true,
+    "words": [
+      "um",
+      "umm",
+      "uh",
+      "uhh",
+      "uhm",
+      "erm",
+      "er",
+      "hmm",
+      "mm"
+    ]
+  },
+  "trimEnds": true,
+  "manualCuts": [],
+  "keep": [],
+  "cut": {
+    "encoder": "auto",
+    "crf": 17,
+    "nvencCq": 19,
+    "speed": 1,
+    "voiceChain": null
+  },
+  "format": {
+    "aspect": "source",
+    "maxLongSide": 1920,
+    "focusX": "50%"
+  },
+  "captions": {
+    "enabled": true,
+    "style": "bold",
+    "position": "auto",
+    "maxWords": "auto",
+    "uppercase": null,
+    "hideFillers": true,
+    "corrections": {}
+  },
+  "export": {
+    "quality": "looks",
+    "gpuEncode": false,
+    "loudness": -14,
+    "truePeak": -1.5
+  }
+}
